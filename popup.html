@@ -1,14 +1,172 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Gemini API Key</title>
+  <title>LinkedIn AI Assistant</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h2>🔐 Gemini API Key</h2>
-  <input type="password" id="apiKey" placeholder="Enter Gemini API key" />
-  <button id="saveKey">Save</button>
-  <p id="status"></p>
+  <div class="header">
+    <div class="header-content">
+      <span class="header-icon">L</span>
+      <span class="header-title">LinkedIn AI Assistant</span>
+      <div class="header-actions">
+        <button class="header-btn" id="darkModeBtn" title="Toggle Dark Mode">
+          <span class="action-icon">D</span>Dark
+        </button>
+        <span class="close-btn" id="closeBtn">X</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="selected-text-section">
+      <div class="selected-text-box">
+        <div class="selected-text-label">SELECTED TEXT:</div>
+        <div class="selected-text" id="selectedText">No text selected</div>
+      </div>
+    </div>
+
+    <div class="tone-section">
+      <div class="section-label">CHOOSE TONE:</div>
+      <div class="tone-grid">
+        <button class="tone-btn" data-tone="formal">
+          <span class="tone-icon">F</span>
+          <span class="tone-text">FORMAL</span>
+        </button>
+        <button class="tone-btn" data-tone="friendly">
+          <span class="tone-icon">F</span>
+          <span class="tone-text">FRIENDLY</span>
+        </button>
+        <button class="tone-btn" data-tone="insightful">
+          <span class="tone-icon">I</span>
+          <span class="tone-text">INSIGHTFUL</span>
+        </button>
+        <button class="tone-btn" data-tone="funny">
+          <span class="tone-icon">F</span>
+          <span class="tone-text">FUNNY</span>
+        </button>
+        <button class="tone-btn" data-tone="thanks">
+          <span class="tone-icon">T</span>
+          <span class="tone-text">THANKS</span>
+        </button>
+        <button class="tone-btn" data-tone="plug-product">
+          <span class="tone-icon">P</span>
+          <span class="tone-text">PLUG PRODUCT</span>
+        </button>
+        <button class="tone-btn" data-tone="custom">
+          <span class="tone-icon">C</span>
+          <span class="tone-text">CUSTOM</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="custom-input-section" id="customInputSection" style="display: none;">
+      <div class="section-label">CUSTOM INSTRUCTIONS:</div>
+      <textarea 
+        id="customInput" 
+        placeholder="Enter your custom instructions for the AI (e.g., 'Reply as a marketing expert', 'Use technical jargon', 'Make it sound like a CEO')"
+        class="custom-textarea"
+      ></textarea>
+    </div>
+
+    <div class="options-section">
+      <div class="section-label">RESPONSE OPTIONS:</div>
+      <div class="length-slider-container">
+        <label>Length:</label>
+        <div class="slider-container">
+          <input type="range" id="lengthSlider" min="1" max="3" value="2" class="length-slider">
+          <div class="slider-labels">
+            <span>Short</span>
+            <span class="current-length">Medium</span>
+            <span>Long</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="toggle-grid">
+        <div class="toggle-item">
+          <label class="toggle-label">End with Question</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="endWithQuestion">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="toggle-item">
+          <label class="toggle-label">Add Hashtags</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="addHashtags">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="toggle-item">
+          <label class="toggle-label">Include Emojis</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="includeEmojis">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="toggle-item">
+          <label class="toggle-label">Business Focus</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="businessFocus">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="toggle-item">
+          <label class="toggle-label">Bullet Format</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="bulletFormat">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons-row">
+      <button class="secondary-btn" id="quickActionsBtn" title="Quick Actions (Ctrl+Q)">
+        <span class="action-icon">Q</span>Quick Actions
+      </button>
+      <button class="secondary-btn" id="historyBtn" title="Reply History (Ctrl+H)">
+        <span class="action-icon">H</span>History
+      </button>
+      <button class="secondary-btn" id="templatesBtn" title="Saved Templates (Ctrl+T)">
+        <span class="action-icon">T</span>Templates
+      </button>
+    </div>
+
+    <button class="generate-btn" id="generateBtn">
+      <span>Generate Reply</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+
+    <div class="reply-section" id="replySection" style="display: none;">
+      <div class="reply-label">GENERATED REPLY:</div>
+      <div class="reply-box" id="replyBox"></div>
+      <div class="reply-actions">
+        <button class="action-btn" id="copyBtn">
+          <span class="action-icon">C</span>
+          Copy
+        </button>
+        <button class="action-btn" id="regenerateBtn">
+          <span class="action-icon">R</span>
+          Regenerate
+        </button>
+        <button class="action-btn" id="editBtn">
+          <span class="action-icon">E</span>
+          Edit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="keyboard-shortcuts">
+      <span class="shortcut-hint">Ctrl+Enter: Generate | Ctrl+C: Copy | Ctrl+H: History | Ctrl+T: Templates | Ctrl+Q: Quick Actions | 1-7: Quick Tones</span>
+    </div>
+    <span class="settings-link" id="settingsLink">Settings</span>
+    <span class="settings-link" id="dbSettingsLink">Database</span>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
