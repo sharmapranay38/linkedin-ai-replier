@@ -6,8 +6,6 @@ let replyHistory = [];
 let savedTemplates = [];
 let currentTemplate = null;
 
-// Default API key - you can change this
-const DEFAULT_GEMINI_API_KEY = 'AIzaSyBEVZaYOjlcYY_AaXlfXuk8OpAluyoBrRY';
 
 // Initialize popup
 document.addEventListener('DOMContentLoaded', () => {
